@@ -1,14 +1,12 @@
 package wings.math.vectors;
 
-import java.util.Objects;
-
 /**
  * Класс Vector3 для работы с трехмерными векторами.
  */
 public class Vector3 implements Vector {
-    private float x;
-    private float y;
-    private float z;
+    private final float x;
+    private final float y;
+    private final float z;
 
     // Конструктор
     public Vector3(float x, float y, float z) {
@@ -23,7 +21,6 @@ public class Vector3 implements Vector {
         if (v2 instanceof Vector3 v) {
             return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
         }
-        System.err.println("Vector3.add: прибавляемый вектор не соответствует размерности.");
         throw new IllegalArgumentException("Vector3.add: прибавляемый вектор не соответствует размерности.");
     }
 
@@ -32,7 +29,6 @@ public class Vector3 implements Vector {
         if (v2 instanceof Vector3 v) {
             return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
         }
-        System.err.println("Vector3.subtract: вычитаемый вектор не соответствует размерности.");
         throw new IllegalArgumentException("Vector3.subtract: вычитаемый вектор не соответствует размерности.");
     }
 
@@ -44,7 +40,6 @@ public class Vector3 implements Vector {
     @Override
     public Vector divide(float scalar) {
         if (scalar == 0) {
-            System.err.println("Vector3.divide: деление на ноль невозможно.");
             throw new ArithmeticException("Vector3.divide: деление на ноль невозможно.");
         }
         return new Vector3(this.x / scalar, this.y / scalar, this.z / scalar);
@@ -58,7 +53,6 @@ public class Vector3 implements Vector {
     public Vector normalize() {
         float length = length();
         if (length == 0) {
-            System.err.println("Vector3.normalize: длина вектора равна нулю, нормализация невозможна.");
             throw new ArithmeticException("Vector3.normalize: длина вектора равна нулю, нормализация невозможна.");
         }
         return divide(length);
@@ -69,7 +63,6 @@ public class Vector3 implements Vector {
         if (v2 instanceof Vector3 v) {
             return this.x * v.x + this.y * v.y + this.z * v.z;
         }
-        System.err.println("Vector3.dotProduct: скалярное произведение невозможно с вектором другой размерности.");
         throw new IllegalArgumentException("Vector3.dotProduct: скалярное произведение невозможно с вектором другой размерности.");
     }
 
@@ -82,7 +75,6 @@ public class Vector3 implements Vector {
                     this.x * v.y - this.y * v.x
             );
         }
-        System.err.println("Vector3.crossProduct: векторное произведение невозможно с вектором другой размерности.");
         throw new IllegalArgumentException("Vector3.crossProduct: векторное произведение невозможно с вектором другой размерности.");
     }
 

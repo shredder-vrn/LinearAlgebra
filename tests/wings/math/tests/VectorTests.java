@@ -6,6 +6,9 @@ import wings.math.vectors.Vector;
 import wings.math.vectors.Vector3;
 
 class VectorTests {
+
+    // Тесты для трёхмерных векторов
+
     @Test
     public void testVector3Add() {
         Vector3 v1 = new Vector3(1.0f, 2.0f, 3.0f);
@@ -61,5 +64,8 @@ class VectorTests {
         Vector3 expected = new Vector3(-3.0f, 6.0f, -3.0f);
         Assertions.assertEquals(expected, vector1.crossProduct(vector2));
     }
+
+    // Тесты для двухмерных векторов
+
 
 }

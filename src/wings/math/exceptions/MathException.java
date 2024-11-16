@@ -1,4 +1,4 @@
 package wings.math.exceptions;
 
-public class Vector3 {
+public class MathException {
 }

@@ -12,17 +12,17 @@ public class Vector4 implements Vector{
     }
 
     @Override
-    public Vector scale(double scalar) {
+    public Vector scale(float scalar) {
         return null;
     }
 
     @Override
-    public Vector divide(double scalar) {
+    public Vector divide(float scalar) {
         return null;
     }
 
     @Override
-    public double length() {
+    public float length() {
         return 0;
     }
 
@@ -32,7 +32,7 @@ public class Vector4 implements Vector{
     }
 
     @Override
-    public double dotProduct(Vector v2) {
+    public float dotProduct(Vector v2) {
         return 0;
     }
 }

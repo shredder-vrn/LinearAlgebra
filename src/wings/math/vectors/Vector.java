@@ -17,17 +17,17 @@ public interface Vector {
     /**
      * Умножение вектора на скаляр.
      */
-    Vector scale(double scalar);
+    Vector scale(float scalar);
 
     /**
      * Деление вектора на скаляр.
      */
-    Vector divide(double scalar);
+    Vector divide(float scalar);
 
     /**
      * Вычисление длины вектора.
      */
-    double length();
+    float length();
 
     /**
      * Нормализация вектора (приведение длины к 1).
@@ -37,5 +37,5 @@ public interface Vector {
     /**
      * Скалярное произведение с другим вектором.
      */
-    double dotProduct(Vector v2);
+    float dotProduct(Vector v2);
 }

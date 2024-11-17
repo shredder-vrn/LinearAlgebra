@@ -15,6 +15,18 @@ public class Vector3 implements Vector {
         this.z = z;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
     // Реализация методов интерфейса Vector
     @Override
     public Vector add(Vector v2) {

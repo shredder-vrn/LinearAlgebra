@@ -17,6 +17,25 @@ public class Vector4 implements Vector {
         this.w = w;
     }
 
+    // Геттеры
+
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public float getW() {
+        return w;
+    }
+
     // Реализация методов интерфейса Vector
     @Override
     public Vector add(Vector v) {

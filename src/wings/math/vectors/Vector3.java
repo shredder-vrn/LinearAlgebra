@@ -15,6 +15,8 @@ public class Vector3 implements Vector {
         this.z = z;
     }
 
+    // Геттеры
+
     public float getX() {
         return x;
     }

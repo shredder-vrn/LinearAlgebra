@@ -104,6 +104,28 @@ public class Matrix4x4 implements Matrix {
         return new Matrix4x4(zero);
     }
 
+    public float determinant() {
+        float det = 0.0f;
+        for (int i = 0; i < 4; i++) {
+            det += (i % 2 == 0 ? 1 : -1) * elements[0][i] * minorDeterminant(i);
+        }
+        return det;
+    }
+    private float minorDeterminant(int col) {
+        float[][] minor = new float[3][3];
+        int minorRow = 0, minorCol;
+        for (int i = 0; i < 4; i++) {
+            if (i == 0) continue;
+            minorCol = 0;
+            for (int j = 0; j < 4; j++) {
+                if (j == col) continue;
+                minor[minorRow][minorCol++] = elements[i][j];
+            }
+            minorRow++;
+        }
+        return new Matrix3x3(minor).determinant();
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Matrix4x4{\n");

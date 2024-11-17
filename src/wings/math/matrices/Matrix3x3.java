@@ -103,6 +103,13 @@ public class Matrix3x3 implements Matrix {
         return new Matrix3x3(zero);
     }
 
+    public float determinant() {
+        return elements[0][0] * (elements[1][1] * elements[2][2] - elements[1][2] * elements[2][1])
+                - elements[0][1] * (elements[1][0] * elements[2][2] - elements[1][2] * elements[2][0])
+                + elements[0][2] * (elements[1][0] * elements[2][1] - elements[1][1] * elements[2][0]);
+    }
+
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Matrix3x3{\n");

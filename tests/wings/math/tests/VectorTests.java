@@ -112,7 +112,7 @@ class VectorTests {
     @Test
     public void testVector3AddException() {
         Vector3 v1 = new Vector3(1.0f, 2.0f, 3.0f);
-        Vector2 v2 = new Vector2(4.0f, 5.0f); // Несовместимый размер
+        Vector2 v2 = new Vector2(4.0f, 5.0f);
         Assertions.assertThrows(IllegalArgumentException.class, () -> v1.add(v2));
     }
 
@@ -128,7 +128,7 @@ class VectorTests {
     @Test
     public void testVector3SubtractException() {
         Vector3 vector1 = new Vector3(4.0f, 5.0f, 6.0f);
-        Vector2 vector2 = new Vector2(1.0f, 2.0f); // Несовместимый размер
+        Vector2 vector2 = new Vector2(1.0f, 2.0f);
         Assertions.assertThrows(IllegalArgumentException.class, () -> vector1.subtract(vector2));
     }
 
@@ -267,7 +267,7 @@ class VectorTests {
     @Test
     public void testVector4Normalize() {
         Vector4 vector = new Vector4(3.0f, 0.0f, 4.0f, 0.0f);
-        Vector4 expected = new Vector4(0.6f, 0.0f, 0.8f, 0.0f); // Нормализация (3, 0, 4, 0)
+        Vector4 expected = new Vector4(0.6f, 0.0f, 0.8f, 0.0f);
         Assertions.assertEquals(expected, vector.normalize());
     }
 

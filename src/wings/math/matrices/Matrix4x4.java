@@ -126,6 +126,60 @@ public class Matrix4x4 implements Matrix {
         return new Matrix3x3(minor).determinant();
     }
 
+    public Matrix4x4 inverse() {
+        float determinant = this.determinant();
+        if (Math.abs(determinant) < 1e-6) {
+            throw new IllegalArgumentException("Matrix4x4.inverse: матрица вырождена, обратной нет.");
+        }
+
+        float[][] cofactor = new float[4][4];
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                float[][] minor = getMinor(elements, i, j);
+                cofactor[i][j] = ((i + j) % 2 == 0 ? 1 : -1) * determinant3x3(minor);
+            }
+        }
+
+        float[][] adjugate = new float[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                adjugate[i][j] = cofactor[j][i];
+            }
+        }
+
+        float[][] inverse = new float[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                inverse[i][j] = adjugate[i][j] / determinant;
+            }
+        }
+
+        return new Matrix4x4(inverse);
+    }
+
+    private float[][] getMinor(float[][] matrix, int row, int col) {
+        float[][] minor = new float[3][3];
+        int minorRow = 0, minorCol;
+        for (int i = 0; i < 4; i++) {
+            if (i == row) continue;
+            minorCol = 0;
+            for (int j = 0; j < 4; j++) {
+                if (j == col) continue;
+                minor[minorRow][minorCol] = matrix[i][j];
+                minorCol++;
+            }
+            minorRow++;
+        }
+        return minor;
+    }
+
+    private float determinant3x3(float[][] matrix) {
+        return matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])
+                - matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0])
+                + matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Matrix4x4{\n");

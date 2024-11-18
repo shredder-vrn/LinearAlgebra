@@ -109,6 +109,43 @@ public class Matrix3x3 implements Matrix {
                 + elements[0][2] * (elements[1][0] * elements[2][1] - elements[1][1] * elements[2][0]);
     }
 
+    public Matrix3x3 inverse() {
+        float determinant = this.determinant();
+        if (Math.abs(determinant) < 1e-6) {
+            throw new IllegalArgumentException("Matrix3x3.inverse: матрица вырождена, обратной нет.");
+        }
+
+        float[][] cofactor = new float[3][3];
+        cofactor[0][0] = elements[1][1] * elements[2][2] - elements[1][2] * elements[2][1];
+        cofactor[0][1] = elements[1][2] * elements[2][0] - elements[1][0] * elements[2][2];
+        cofactor[0][2] = elements[1][0] * elements[2][1] - elements[1][1] * elements[2][0];
+
+        cofactor[1][0] = elements[2][1] * elements[0][2] - elements[2][2] * elements[0][1];
+        cofactor[1][1] = elements[2][2] * elements[0][0] - elements[2][0] * elements[0][2];
+        cofactor[1][2] = elements[2][0] * elements[0][1] - elements[2][1] * elements[0][0];
+
+        cofactor[2][0] = elements[0][1] * elements[1][2] - elements[0][2] * elements[1][1];
+        cofactor[2][1] = elements[0][2] * elements[1][0] - elements[0][0] * elements[1][2];
+        cofactor[2][2] = elements[0][0] * elements[1][1] - elements[0][1] * elements[1][0];
+
+        float[][] adjugate = new float[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                adjugate[i][j] = cofactor[j][i];
+            }
+        }
+
+        float[][] inverse = new float[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                inverse[i][j] = adjugate[i][j] / determinant;
+            }
+        }
+
+        return new Matrix3x3(inverse);
+    }
+
+
 
     @Override
     public String toString() {

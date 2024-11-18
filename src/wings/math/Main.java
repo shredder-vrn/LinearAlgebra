@@ -11,6 +11,7 @@ public class Main {
                 {0.0f, 4.0f, 3.0f, 2.0f},
                 {1.0f, -1.0f, 1.0f, 2.0f}
         };
+
         Matrix4x4 matrix4x4 = new Matrix4x4(m);
         System.out.println(matrix4x4.determinant());
 

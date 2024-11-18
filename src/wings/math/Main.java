@@ -15,5 +15,7 @@ public class Main {
         Matrix4x4 matrix4x4 = new Matrix4x4(m);
         System.out.println(matrix4x4.determinant());
 
+
+
     }
 }

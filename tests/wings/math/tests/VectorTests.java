@@ -1,296 +1,273 @@
 package wings.math.tests;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import wings.math.vectors.Vector;
 import wings.math.vectors.Vector2;
 import wings.math.vectors.Vector3;
 import wings.math.vectors.Vector4;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class VectorTests {
-/*
-    // Тесты на двухмерные векторы
 
+    /**
+     * Vector2
+     */
     @Test
-    public void testVector2Add() {
-        Vector2 v1 = new Vector2(1.0f, 2.0f);
-        Vector2 v2 = new Vector2(4.0f, 5.0f);
-        Vector result = v1.add(v2);
-        Vector2 expected = new Vector2(5.0f, 7.0f);
-        Assertions.assertEquals(expected, result);
+    void testV2Add() {
+        Vector2 v1 = new Vector2(1, 2);
+        Vector2 v2 = new Vector2(3, 4);
+        Vector2 result = v1.add(v2);
+        assertEquals(new Vector2(4, 6), result, "Сложение двух векторов выполнено неверно.");
     }
 
     @Test
-    public void testVector2AddException() {
-        Vector2 v1 = new Vector2(1.0f, 2.0f);
-        Vector3 v2 = new Vector3(4.0f, 5.0f, 6.0f);
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {v1.add(v2);});
-        Assertions.assertEquals("Vector2.add: прибавляемый вектор не соответствует размерности.", exception.getMessage());
+    void testV2Subtract() {
+        Vector2 v1 = new Vector2(5, 6);
+        Vector2 v2 = new Vector2(2, 3);
+        Vector2 result = v1.subtract(v2);
+        assertEquals(new Vector2(3, 3), result, "Вычитание двух векторов выполнено неверно.");
     }
 
     @Test
-    public void testVector2Subtract() {
-        Vector2 vector1 = new Vector2(4.0f, 5.0f);
-        Vector2 vector2 = new Vector2(1.0f, 2.0f);
-        Vector2 expected = new Vector2(3.0f, 3.0f);
-        Assertions.assertEquals(expected, vector1.subtract(vector2));
+    void testV2Scale() {
+        Vector2 v = new Vector2(2, 3);
+        Vector2 result = v.scale(2);
+        assertEquals(new Vector2(4, 6), result, "Масштабирование выполнено неверно.");
     }
 
     @Test
-    public void testVector2SubtractException() {
-        Vector2 v1 = new Vector2(1.0f, 2.0f);
-        Vector3 v2 = new Vector3(4.0f, 5.0f, 6.0f);
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {v1.subtract(v2);});
-        Assertions.assertEquals("Vector2.subtract: вычитаемый вектор не соответствует размерности.", exception.getMessage());
+    void testV2Divide() {
+        Vector2 v = new Vector2(6, 8);
+        Vector2 result = v.divide(2);
+        assertEquals(new Vector2(3, 4), result, "Деление вектора выполнено неверно.");
     }
 
     @Test
-    public void testVector2Scale() {
-        Vector2 vector1 = new Vector2(1.0f, 5.0f);
-        float scalar = 2.0f;
-        Vector2 expected = new Vector2(2.0f, 10.0f);
-        Assertions.assertEquals(expected, vector1.scale(scalar));
+    void testV2DivideByZero() {
+        Vector2 v = new Vector2(1, 1);
+        assertThrows(ArithmeticException.class, () -> v.divide(0), "Деление на ноль должно вызывать исключение.");
     }
 
     @Test
-    public void testVector2Divide() {
-        Vector2 vector1 = new Vector2(2.0f, 10.0f);
-        float scalar = 2.0f;
-        Vector2 expected = new Vector2(1.0f, 5.0f);
-        Assertions.assertEquals(expected, vector1.divide(scalar));
+    void testV2Length() {
+        Vector2 v = new Vector2(3, 4);
+        assertEquals(5, v.length(), 1e-6, "Длина вектора вычислена неверно.");
     }
 
     @Test
-    public void testVector2DivideByZeroException() {
-        Vector2 v1 = new Vector2(1.0f, 2.0f);
-        Exception exception = Assertions.assertThrows(ArithmeticException.class, () -> {v1.divide(0);});
-        Assertions.assertEquals("Vector2.divide: деление на ноль невозможно.", exception.getMessage());
+    void testV2Normalize() {
+        Vector2 v = new Vector2(3, 4);
+        Vector2 result = v.normalize();
+        assertEquals(new Vector2(0.6f, 0.8f), result, "Нормализация вектора выполнена неверно.");
     }
 
     @Test
-    public void testVector2Normalize() {
-        Vector2 vector = new Vector2(3.0f, 4.0f);
-        Vector2 expected = new Vector2(0.6f, 0.8f);
-
-        Assertions.assertEquals(expected, vector.normalize());
+    void testV2NormalizeZeroLength() {
+        Vector2 v = new Vector2(0, 0);
+        assertThrows(ArithmeticException.class, v::normalize, "Нормализация нулевого вектора должна вызывать исключение.");
     }
 
     @Test
-    public void testVector2NormalizeZeroLengthException() {
-        Vector2 v1 = new Vector2(0.0f, 0.0f);
-        Exception exception = Assertions.assertThrows(ArithmeticException.class, v1::normalize);
-        Assertions.assertEquals("Vector2.normalize: длина вектора равна нулю, нормализация невозможна.", exception.getMessage());
+    void testV2DotProduct() {
+        Vector2 v1 = new Vector2(1, 2);
+        Vector2 v2 = new Vector2(3, 4);
+        assertEquals(11, v1.dotProduct(v2), 1e-6, "Скалярное произведение вычислено неверно.");
     }
 
     @Test
-    public void testVector2DotProduct() {
-        Vector2 vector1 = new Vector2(2.0f, 3.0f);
-        Vector2 vector2 = new Vector2(4.0f, 5.0f);
-        float expected = 2.0f * 4.0f + 3.0f * 5.0f; // 23.0f
-        Assertions.assertEquals(expected, vector1.dotProduct(vector2));
+    void testV2Equals() {
+        Vector2 v1 = new Vector2(1, 2);
+        Vector2 v2 = new Vector2(1, 2);
+        Vector2 v3 = new Vector2(2, 3);
+        assertEquals(v1, v2, "Одинаковые векторы должны быть равны.");
+        assertNotEquals(v1, v3, "Разные векторы не должны быть равны.");
     }
 
     @Test
-    public void testVector2DotProductException() {
-        Vector2 v1 = new Vector2(1.0f, 2.0f);
-        Vector3 v2 = new Vector3(4.0f, 5.0f, 6.0f);
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {v1.dotProduct(v2);});
-        Assertions.assertEquals("Vector2.dotProduct: скалярное произведение невозможно с вектором другой размерности.", exception.getMessage());
+    void testV2ToString() {
+        Vector2 v = new Vector2(1.5f, 2.5f);
+        assertEquals("Vector2X{x=1.5, y=2.5}", v.toString(), "Метод toString вернул неверное значение.");
     }
 
-    // Тесты на трёхмерные векторы
-
+    /**
+     * Vector3
+     */
     @Test
-    public void testVector3Add() {
-        Vector3 v1 = new Vector3(1.0f, 2.0f, 3.0f);
-        Vector3 v2 = new Vector3(4.0f, 5.0f, 6.0f);
-        Vector result = v1.add(v2);
-        Vector3 expected = new Vector3(5.0f, 7.0f, 9.0f);
-        Assertions.assertEquals(expected, result);
-    }
-
-    @Test
-    public void testVector3AddException() {
-        Vector3 v1 = new Vector3(1.0f, 2.0f, 3.0f);
-        Vector2 v2 = new Vector2(4.0f, 5.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> v1.add(v2));
+    void testV3Add() {
+        Vector3 v1 = new Vector3(1, 2, 3);
+        Vector3 v2 = new Vector3(4, 5, 6);
+        Vector3 result = v1.add(v2);
+        assertEquals(new Vector3(5, 7, 9), result, "Сложение выполнено неверно.");
     }
 
     @Test
-    public void testVector3Subtract() {
-        Vector3 vector1 = new Vector3(4.0f, 5.0f, 6.0f);
-        Vector3 vector2 = new Vector3(1.0f, 2.0f, 3.0f);
-        Vector3 expected = new Vector3(3.0f, 3.0f, 3.0f);
-
-        Assertions.assertEquals(expected, vector1.subtract(vector2));
+    void testV3Subtract() {
+        Vector3 v1 = new Vector3(4, 5, 6);
+        Vector3 v2 = new Vector3(1, 2, 3);
+        Vector3 result = v1.subtract(v2);
+        assertEquals(new Vector3(3, 3, 3), result, "Вычитание выполнено неверно.");
     }
 
     @Test
-    public void testVector3SubtractException() {
-        Vector3 vector1 = new Vector3(4.0f, 5.0f, 6.0f);
-        Vector2 vector2 = new Vector2(1.0f, 2.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> vector1.subtract(vector2));
+    void testV3Scale() {
+        Vector3 v = new Vector3(1, 2, 3);
+        Vector3 result = v.scale(2);
+        assertEquals(new Vector3(2, 4, 6), result, "Масштабирование выполнено неверно.");
     }
 
     @Test
-    public void testVector3Scale() {
-        Vector3 vector1 = new Vector3(1.0f, 5.0f, 3.0f);
-        float scalar = 2.0f;
-        Vector3 expected = new Vector3(2.0f, 10.0f, 6.0f);
-        Assertions.assertEquals(expected, vector1.scale(scalar));
+    void testV3Divide() {
+        Vector3 v = new Vector3(2, 4, 6);
+        Vector3 result = v.divide(2);
+        assertEquals(new Vector3(1, 2, 3), result, "Деление выполнено неверно.");
     }
 
     @Test
-    public void testVector3Divide() {
-        Vector3 vector1 = new Vector3(2.0f, 10.0f, 6.0f);
-        float scalar = 2.0f;
-        Vector3 expected = new Vector3(1.0f, 5.0f, 3.0f);
-        Assertions.assertEquals(expected, vector1.divide(scalar));
+    void testV3DivideByZero() {
+        Vector3 v = new Vector3(2, 4, 6);
+        assertThrows(ArithmeticException.class, () -> v.divide(0), "Деление на ноль должно вызывать исключение.");
     }
 
     @Test
-    public void testVector3DivideByZero() {
-        Vector3 vector1 = new Vector3(2.0f, 10.0f, 6.0f);
-        float scalar = 0.0f;
-        Assertions.assertThrows(ArithmeticException.class, () -> vector1.divide(scalar));
+    void testV3Length() {
+        Vector3 v = new Vector3(3, 4, 0);
+        assertEquals(5.0f, v.length(), "Расчет длины выполнен неверно.");
     }
 
     @Test
-    public void testVector3Normalize() {
-        Vector3 vector = new Vector3(3.0f, 4.0f, 0.0f);
-        Vector3 expected = new Vector3(0.6f, 0.8f, 0.0f);
-        Assertions.assertEquals(expected, vector.normalize());
+    void testV3Normalize() {
+        Vector3 v = new Vector3(3, 0, 4);
+        Vector3 result = v.normalize();
+        assertEquals(new Vector3(0.6f, 0.0f, 0.8f), result, "Нормализация выполнена неверно.");
     }
 
     @Test
-    public void testVector3NormalizeException() {
-        Vector3 vector = new Vector3(0.0f, 0.0f, 0.0f);
-        Assertions.assertThrows(ArithmeticException.class, vector::normalize);
+    void testV3NormalizeZeroLength() {
+        Vector3 v = new Vector3(0, 0, 0);
+        assertThrows(ArithmeticException.class, v::normalize, "Нормализация нулевого вектора должна вызывать исключение.");
     }
 
     @Test
-    public void testVector3DotProduct() {
-        Vector3 vector1 = new Vector3(2.0f, 2.0f, 3.0f);
-        Vector3 vector2 = new Vector3(4.0f, 5.0f, 6.0f);
-        float expected = 2.0f * 4.0f + 2.0f * 5.0f + 3.0f * 6.0f; // 32.0f
-        Assertions.assertEquals(expected, vector1.dotProduct(vector2));
+    void testV3DotProduct() {
+        Vector3 v1 = new Vector3(1, 2, 3);
+        Vector3 v2 = new Vector3(4, 5, 6);
+        float result = v1.dotProduct(v2);
+        assertEquals(32.0f, result, "Скалярное произведение выполнено неверно.");
     }
 
     @Test
-    public void testVector3DotProductException() {
-        Vector3 vector1 = new Vector3(2.0f, 2.0f, 3.0f);
-        Vector2 vector2 = new Vector2(4.0f, 5.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> vector1.dotProduct(vector2));
-    }
-
-
-    @Test
-    public void testVector3CrossProduct() {
-        Vector3 vector1 = new Vector3(1.0f, 2.0f, 3.0f);
-        Vector3 vector2 = new Vector3(4.0f, 5.0f, 6.0f);
-        // AxB = (y1z2-z1y2, z1x2-x1z2, x1y2-y1x2)
-        Vector3 expected = new Vector3(-3.0f, 6.0f, -3.0f);
-        Assertions.assertEquals(expected, vector1.crossProduct(vector2));
+    void testV3CrossProduct() {
+        Vector3 v1 = new Vector3(1, 0, 0);
+        Vector3 v2 = new Vector3(0, 1, 0);
+        Vector3 result = v1.crossProduct(v2);
+        assertEquals(new Vector3(0, 0, 1), result, "Векторное произведение выполнено неверно.");
     }
 
     @Test
-    public void testVector3CrossProductException() {
-        Vector3 vector1 = new Vector3(1.0f, 2.0f, 3.0f);
-        Vector2 vector2 = new Vector2(4.0f, 5.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> vector1.crossProduct(vector2));
-    }
-
-    // Тесты на четырёхмерные векторы
-
-    @Test
-    public void testVector4Add() {
-        Vector4 v1 = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Vector4 v2 = new Vector4(4.0f, 5.0f, 6.0f, 7.0f);
-        Vector4 expected = new Vector4(5.0f, 7.0f, 9.0f, 11.0f);
-        Assertions.assertEquals(expected, v1.add(v2));
+    void testV3ToString() {
+        Vector3 v = new Vector3(1, 2, 3);
+        String result = v.toString();
+        assertEquals("Vector3X3{x=1.0, y=2.0, z=3.0}", result, "Метод toString выполнен неверно.");
     }
 
     @Test
-    public void testVector4AddException() {
-        Vector4 v1 = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Vector2 v2 = new Vector2(1.0f, 2.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> v1.add(v2),
-                "Vector4.add: должен выбросить исключение при добавлении вектора другой размерности.");
+    void testV3Equals() {
+        Vector3 v1 = new Vector3(1, 2, 3);
+        Vector3 v2 = new Vector3(1, 2, 3);
+        assertEquals(v1, v2, "Равенство идентичных векторов выполнено неверно.");
     }
 
     @Test
-    public void testVector4Subtract() {
-        Vector4 v1 = new Vector4(5.0f, 7.0f, 9.0f, 11.0f);
-        Vector4 v2 = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Vector4 expected = new Vector4(4.0f, 5.0f, 6.0f, 7.0f);
-        Assertions.assertEquals(expected, v1.subtract(v2));
+    void testV3NotEquals() {
+        Vector3 v1 = new Vector3(1, 2, 3);
+        Vector3 v2 = new Vector3(3, 2, 1);
+        assertNotEquals(v1, v2, "Сравнение разных векторов выполнено неверно.");
+    }
+
+    /**
+     * Vector4
+     */
+    @Test
+    void testV4Add() {
+        Vector4 v1 = new Vector4(1, 2, 3, 4);
+        Vector4 v2 = new Vector4(5, 6, 7, 8);
+        Vector4 result = v1.add(v2);
+        assertEquals(new Vector4(6, 8, 10, 12), result, "Сложение выполнено неверно.");
     }
 
     @Test
-    public void testSubtractException() {
-        Vector4 v1 = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Vector2 v2 = new Vector2(1.0f, 2.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> v1.subtract(v2),
-                "Vector4.subtract: должен выбросить исключение при вычитании вектора другой размерности.");
+    void testV4Subtract() {
+        Vector4 v1 = new Vector4(5, 6, 7, 8);
+        Vector4 v2 = new Vector4(1, 2, 3, 4);
+        Vector4 result = v1.subtract(v2);
+        assertEquals(new Vector4(4, 4, 4, 4), result, "Вычитание выполнено неверно.");
     }
 
     @Test
-    public void testVector4Scale() {
-        Vector4 vector = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        float scalar = 2.0f;
-        Vector4 expected = new Vector4(2.0f, 4.0f, 6.0f, 8.0f);
-        Assertions.assertEquals(expected, vector.scale(scalar));
+    void testV4Scale() {
+        Vector4 v = new Vector4(1, 2, 3, 4);
+        Vector4 result = v.scale(2);
+        assertEquals(new Vector4(2, 4, 6, 8), result, "Масштабирование выполнено неверно.");
     }
 
     @Test
-    public void testVector4Divide() {
-        Vector4 vector = new Vector4(2.0f, 4.0f, 6.0f, 8.0f);
-        float scalar = 2.0f;
-        Vector4 expected = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Assertions.assertEquals(expected, vector.divide(scalar));
+    void testV4Divide() {
+        Vector4 v = new Vector4(2, 4, 6, 8);
+        Vector4 result = v.divide(2);
+        assertEquals(new Vector4(1, 2, 3, 4), result, "Деление выполнено неверно.");
     }
 
     @Test
-    public void testDivideByZeroException() {
-        Vector4 vector = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Assertions.assertThrows(ArithmeticException.class, () -> vector.divide(0.0f),
-                "Vector4.divide: должен выбросить исключение при делении на ноль.");
+    void testV4DivideByZero() {
+        Vector4 v = new Vector4(2, 4, 6, 8);
+        assertThrows(ArithmeticException.class, () -> v.divide(0), "Деление на ноль должно вызывать исключение.");
     }
 
     @Test
-    public void testVector4Length() {
-        Vector4 vector = new Vector4(3.0f, 2.0f, 3.0f, 4.0f);
-        float expected = (float) Math.sqrt(3.0f * 3.0f + 2.0f * 2.0f + 3.0f * 3.0f + 4.0f * 4.0f);
-        Assertions.assertEquals(expected, vector.length(), 1e-6f);
+    void testV4Length() {
+        Vector4 v = new Vector4(2, 2, 1, 1);
+        assertEquals(3.0f, v.length(), "Расчет длины выполнен неверно.");
     }
 
     @Test
-    public void testVector4Normalize() {
-        Vector4 vector = new Vector4(3.0f, 0.0f, 4.0f, 0.0f);
-        Vector4 expected = new Vector4(0.6f, 0.0f, 0.8f, 0.0f);
-        Assertions.assertEquals(expected, vector.normalize());
+    void testV4Normalize() {
+        Vector4 v = new Vector4(2, 2, 1, 1);
+        Vector4 result = v.normalize();
+        assertEquals(new Vector4(2 / 3f, 2 / 3f, 1 / 3f, 1 / 3f), result, "Нормализация выполнена неверно.");
     }
 
     @Test
-    public void testNormalizeException() {
-        Vector4 zeroVector = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-        Assertions.assertThrows(ArithmeticException.class, zeroVector::normalize,
-                "Vector4.normalize: должен выбросить исключение при нормализации нулевого вектора.");
+    void testV4NormalizeZeroLength() {
+        Vector4 v = new Vector4(0, 0, 0, 0);
+        assertThrows(ArithmeticException.class, v::normalize, "Нормализация нулевого вектора должна вызывать исключение.");
     }
 
     @Test
-    public void testVector4DotProduct() {
-        Vector4 v1 = new Vector4(3.0f, 2.0f, 3.0f, 4.0f);
-        Vector4 v2 = new Vector4(4.0f, 5.0f, 6.0f, 7.0f);
-        float expected = 3.0f * 4.0f + 2.0f * 5.0f + 3.0f * 6.0f + 4.0f * 7.0f; // 60.0f
-        Assertions.assertEquals(expected, v1.dotProduct(v2));
+    void testV4DotProduct() {
+        Vector4 v1 = new Vector4(1, 2, 3, 4);
+        Vector4 v2 = new Vector4(5, 6, 7, 8);
+        float result = v1.dotProduct(v2);
+        assertEquals(70.0f, result, "Скалярное произведение выполнено неверно.");
     }
 
     @Test
-    public void testDotProductException() {
-        Vector4 v1 = new Vector4(1.0f, 2.0f, 3.0f, 4.0f);
-        Vector2 v2 = new Vector2(1.0f, 2.0f);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> v1.dotProduct(v2),
-                "Vector4.dotProduct: должен выбросить исключение при скалярном произведении с вектором другой размерности.");
-    }*/
+    void testV4ToString() {
+        Vector4 v = new Vector4(1, 2, 3, 4);
+        String result = v.toString();
+        assertEquals("Vector4X{x=1.0, y=2.0, z=3.0, w=4.0}", result, "Метод toString выполнен неверно.");
+    }
+
+    @Test
+    void testV4Equals() {
+        Vector4 v1 = new Vector4(1, 2, 3, 4);
+        Vector4 v2 = new Vector4(1, 2, 3, 4);
+        assertEquals(v1, v2, "Равенство идентичных векторов выполнено неверно.");
+    }
+
+    @Test
+    void testV4NotEquals() {
+        Vector4 v1 = new Vector4(1, 2, 3, 4);
+        Vector4 v2 = new Vector4(4, 3, 2, 1);
+        assertNotEquals(v1, v2, "Сравнение разных векторов выполнено неверно.");
+    }
 }

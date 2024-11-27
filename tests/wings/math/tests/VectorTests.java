@@ -226,15 +226,17 @@ class VectorTests {
     @Test
     void testV4Length() {
         Vector4 v = new Vector4(2, 2, 1, 1);
-        assertEquals(3.0f, v.length(), "Расчет длины выполнен неверно.");
+        assertEquals(Math.sqrt(10), v.length(), 1e-6, "Расчет длины выполнен неверно.");
     }
+
 
     @Test
     void testV4Normalize() {
         Vector4 v = new Vector4(2, 2, 1, 1);
         Vector4 result = v.normalize();
-        assertEquals(new Vector4(2 / 3f, 2 / 3f, 1 / 3f, 1 / 3f), result, "Нормализация выполнена неверно.");
+        assertEquals(new Vector4((float) (2 / Math.sqrt(10)), (float)(2 / Math.sqrt(10)), (float)(1 / Math.sqrt(10)), (float)(1 / Math.sqrt(10))), result);
     }
+
 
     @Test
     void testV4NormalizeZeroLength() {

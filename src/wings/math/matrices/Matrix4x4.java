@@ -14,7 +14,7 @@ public class Matrix4x4 implements Matrix<Matrix4x4, Vector4> {
             throw new IllegalArgumentException("Matrix4x4: некорректные размеры матрицы.");
         }
         this.elements = new float[16];
-        System.arraycopy(elements, 0, this.elements, 0, 9);
+        System.arraycopy(elements, 0, this.elements, 0, 16);
     }
 
     // Реализация методов интерфейса Matrix
@@ -54,10 +54,10 @@ public class Matrix4x4 implements Matrix<Matrix4x4, Vector4> {
     public Vector4 multiplyMV(Vector4 v2) {
         float[] result = new float[4];
         for (int i = 0; i < 4; i++) {
-            result[i] = this.elements[i * 3] * v2.x() +
-                    this.elements[i * 3 + 1] * v2.y() +
-                    this.elements[i * 3 + 2] * v2.z() +
-                    this.elements[i * 3 + 3] * v2.w();
+            result[i] = this.elements[i * 4] * v2.x() +
+                    this.elements[i * 4 + 1] * v2.y() +
+                    this.elements[i * 4 + 2] * v2.z() +
+                    this.elements[i * 4 + 3] * v2.w();
 
         }
         return new Vector4(result[0], result[1], result[2], result[3]);

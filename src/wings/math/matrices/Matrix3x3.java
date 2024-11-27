@@ -36,7 +36,6 @@ public class Matrix3x3 implements Matrix<Matrix3x3, Vector3> {
         return new Matrix3x3(result);
     }
 
-    // Умножение на матрицу
     @Override
     public Matrix3x3 multiplyMM(Matrix3x3 m2) {
         float[] result = new float[9];
@@ -51,7 +50,6 @@ public class Matrix3x3 implements Matrix<Matrix3x3, Vector3> {
         return new Matrix3x3(result);
     }
 
-    // Умножение на вектор
     @Override
     public Vector3 multiplyMV(Vector3 v2) {
         float[] result = new float[3];
@@ -64,7 +62,6 @@ public class Matrix3x3 implements Matrix<Matrix3x3, Vector3> {
 
     }
 
-    // Транспонирование матрицы
     public Matrix3x3 transpose() {
         float[] result = new float[9];
         for (int i = 0; i < 3; i++) {
@@ -75,24 +72,20 @@ public class Matrix3x3 implements Matrix<Matrix3x3, Vector3> {
         return new Matrix3x3(result);
     }
 
-    // Единичная матрица
-    public Matrix3x3 identity() {
+    public static Matrix3x3 identity() {
         return new Matrix3x3(new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1});
     }
 
-    // Нулевая матрица
-    public Matrix3x3 zero() {
+    public static Matrix3x3 zero() {
         return new Matrix3x3(new float[9]);
     }
 
-    // Определитель матрицы
     public float determinant() {
         return elements[0] * (elements[4] * elements[8] - elements[5] * elements[7])
                 - elements[1] * (elements[3] * elements[8] - elements[5] * elements[6])
                 + elements[2] * (elements[3] * elements[7] - elements[4] * elements[6]);
     }
 
-    // Обратная матрица
     public Matrix3x3 inverse() {
         float det = determinant();
         if (Math.abs(det) < 1e-6) {

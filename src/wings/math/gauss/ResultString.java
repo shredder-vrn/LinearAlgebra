@@ -4,10 +4,10 @@ import java.util.StringJoiner;
 
 public class ResultString {
 
-    boolean isFree;  // true, если корень является свободным
-    boolean isInfinite;  // корень выражается через другие свободные корни
+    public boolean isFree;  // true, если корень является свободным
+    public boolean isInfinite;  // корень выражается через другие свободные корни
     double[] resultCoefficients;  // массив: [{свободный коэффициент}, {коэффициент при x[i]}, ...]
-    double result;
+    public double result;
 
     public ResultString(double[] arr) {
         isInfinite = true;

@@ -129,6 +129,7 @@ public class GaussMethod {
         // Возвращаем результаты
         return results;
     }
+
     private static String[][] gaussCreateAnswerArray(ResultString[] answer){
         String[][] answerS = new String[2][answer.length];
         for(int i = 0; i<answer.length; i++){

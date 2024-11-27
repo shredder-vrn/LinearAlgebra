@@ -1,177 +1,137 @@
 package wings.math.matrices;
 
-import wings.math.vectors.Vector;
 import wings.math.vectors.Vector3;
 
 /**
  * Класс Matrix3x3 для работы с матрицами размером 3x3.
  */
-public class Matrix3x3 implements Matrix {
-    private final float[][] elements;
+public class Matrix3x3 implements Matrix<Matrix3x3, Vector3> {
+    private final float[] elements;
 
     // Конструктор
-    public Matrix3x3(float[][] elements) {
-        if (elements == null || elements.length != 3 || elements[0].length != 3 || elements[1].length != 3 || elements[2].length != 3) {
-            throw new IllegalArgumentException("Matrix3x3: некорректные размеры матрицы.");
+    public Matrix3x3(float[] elements) {
+        if (elements == null || elements.length != 9) {
+            throw new IllegalArgumentException("Matrix3x3X: некорректные размеры матрицы.");
         }
-        this.elements = new float[3][3];
-        for (int i = 0; i < 3; i++) {
-            System.arraycopy(elements[i], 0, this.elements[i], 0, 3);
-        }
+        this.elements = new float[9];
+        System.arraycopy(elements, 0, this.elements, 0, 9);
     }
 
     // Реализация методов интерфейса Matrix
     @Override
-    public Matrix add(Matrix m2) {
-        if (m2 instanceof Matrix3x3 o) {
-            float[][] result = new float[3][3];
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    result[i][j] = this.elements[i][j] + o.elements[i][j];
-                }
-            }
-            return new Matrix3x3(result);
+    public Matrix3x3 add(Matrix3x3 m2) {
+        float[] result = new float[9];
+        for (int i = 0; i < 9; i++) {
+            result[i] = this.elements[i] + m2.elements[i];
         }
-        throw new IllegalArgumentException("Matrix3x3.add: матрица другой размерности.");
+        return new Matrix3x3(result);
     }
 
     @Override
-    public Matrix subtract(Matrix m2) {
-        if (m2 instanceof Matrix3x3 o) {
-            float[][] result = new float[3][3];
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    result[i][j] = this.elements[i][j] - o.elements[i][j];
-                }
-            }
-            return new Matrix3x3(result);
+    public Matrix3x3 subtract(Matrix3x3 m2) {
+        float[] result = new float[9];
+        for (int i = 0; i < 9; i++) {
+            result[i] = this.elements[i] - m2.elements[i];
         }
-        throw new IllegalArgumentException("Matrix3x3.subtract: матрица другой размерности.");
+        return new Matrix3x3(result);
     }
 
+    // Умножение на матрицу
     @Override
-    public Matrix multiply(Matrix m2) {
-        if (m2 instanceof Matrix3x3 o) {
-            float[][] result = new float[3][3];
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    result[i][j] = 0;
-                    for (int k = 0; k < 3; k++) {
-                        result[i][j] += this.elements[i][k] * o.elements[k][j];
-                    }
-                }
-            }
-            return new Matrix3x3(result);
-        }
-        throw new IllegalArgumentException("Matrix3x3.multiply: матрица другой размерности.");
-    }
-
-    @Override
-    public Vector multiply(Vector vector) {
-        if (vector instanceof Vector3 v) {
-            float[] result = new float[3];
-            for (int i = 0; i < 3; i++) {
-                result[i] = this.elements[i][0] * v.getX() + this.elements[i][1] * v.getY() + this.elements[i][2] * v.getZ();
-            }
-            return new Vector3(result[0], result[1], result[2]);
-        }
-        throw new IllegalArgumentException("Matrix3x3.multiply: вектор другой размерности.");
-    }
-
-    @Override
-    public Matrix transpose() {
-        float[][] result = new float[3][3];
+    public Matrix3x3 multiplyMM(Matrix3x3 m2) {
+        float[] result = new float[9];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                result[i][j] = this.elements[j][i];
+                result[i * 3 + j] = 0;
+                for (int k = 0; k < 3; k++) {
+                    result[i * 3 + j] += this.elements[i * 3 + k] * m2.elements[k * 3 + j];
+                }
             }
         }
         return new Matrix3x3(result);
     }
 
-    public static Matrix3x3 identity() {
-        float[][] identity = {
-                {1, 0, 0},
-                {0, 1, 0},
-                {0, 0, 1}
-        };
-        return new Matrix3x3(identity);
+    // Умножение на вектор
+    @Override
+    public Vector3 multiplyMV(Vector3 v2) {
+        float[] result = new float[3];
+        for (int i = 0; i < 3; i++) {
+            result[i] = this.elements[i * 3] * v2.x() +
+                    this.elements[i * 3 + 1] * v2.y() +
+                    this.elements[i * 3 + 2] * v2.z();
+        }
+        return new Vector3(result[0], result[1], result[2]);
+
     }
 
-    public static Matrix3x3 zero() {
-        float[][] zero = new float[3][3];
-        return new Matrix3x3(zero);
+    // Транспонирование матрицы
+    public Matrix3x3 transpose() {
+        float[] result = new float[9];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                result[i * 3 + j] = this.elements[j * 3 + i];
+            }
+        }
+        return new Matrix3x3(result);
     }
 
+    // Единичная матрица
+    public Matrix3x3 identity() {
+        return new Matrix3x3(new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1});
+    }
+
+    // Нулевая матрица
+    public Matrix3x3 zero() {
+        return new Matrix3x3(new float[9]);
+    }
+
+    // Определитель матрицы
     public float determinant() {
-        return elements[0][0] * (elements[1][1] * elements[2][2] - elements[1][2] * elements[2][1])
-                - elements[0][1] * (elements[1][0] * elements[2][2] - elements[1][2] * elements[2][0])
-                + elements[0][2] * (elements[1][0] * elements[2][1] - elements[1][1] * elements[2][0]);
+        return elements[0] * (elements[4] * elements[8] - elements[5] * elements[7])
+                - elements[1] * (elements[3] * elements[8] - elements[5] * elements[6])
+                + elements[2] * (elements[3] * elements[7] - elements[4] * elements[6]);
     }
 
+    // Обратная матрица
     public Matrix3x3 inverse() {
-        float determinant = this.determinant();
-        if (Math.abs(determinant) < 1e-6) {
-            throw new IllegalArgumentException("Matrix3x3.inverse: матрица вырождена, обратной нет.");
+        float det = determinant();
+        if (Math.abs(det) < 1e-6) {
+            throw new IllegalArgumentException("Matrix3x3X.inverse: матрица вырождена.");
         }
-
-        float[][] cofactor = new float[3][3];
-        cofactor[0][0] = elements[1][1] * elements[2][2] - elements[1][2] * elements[2][1];
-        cofactor[0][1] = elements[1][2] * elements[2][0] - elements[1][0] * elements[2][2];
-        cofactor[0][2] = elements[1][0] * elements[2][1] - elements[1][1] * elements[2][0];
-
-        cofactor[1][0] = elements[2][1] * elements[0][2] - elements[2][2] * elements[0][1];
-        cofactor[1][1] = elements[2][2] * elements[0][0] - elements[2][0] * elements[0][2];
-        cofactor[1][2] = elements[2][0] * elements[0][1] - elements[2][1] * elements[0][0];
-
-        cofactor[2][0] = elements[0][1] * elements[1][2] - elements[0][2] * elements[1][1];
-        cofactor[2][1] = elements[0][2] * elements[1][0] - elements[0][0] * elements[1][2];
-        cofactor[2][2] = elements[0][0] * elements[1][1] - elements[0][1] * elements[1][0];
-
-        float[][] adjugate = new float[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                adjugate[i][j] = cofactor[j][i];
-            }
-        }
-
-        float[][] inverse = new float[3][3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                inverse[i][j] = adjugate[i][j] / determinant;
-            }
-        }
-
-        return new Matrix3x3(inverse);
+        float[] result = new float[9];
+        result[0] = (elements[4] * elements[8] - elements[5] * elements[7]) / det;
+        result[1] = (elements[2] * elements[7] - elements[1] * elements[8]) / det;
+        result[2] = (elements[1] * elements[5] - elements[2] * elements[4]) / det;
+        result[3] = (elements[5] * elements[6] - elements[3] * elements[8]) / det;
+        result[4] = (elements[0] * elements[8] - elements[2] * elements[6]) / det;
+        result[5] = (elements[2] * elements[3] - elements[0] * elements[5]) / det;
+        result[6] = (elements[3] * elements[7] - elements[4] * elements[6]) / det;
+        result[7] = (elements[1] * elements[6] - elements[0] * elements[7]) / det;
+        result[8] = (elements[0] * elements[4] - elements[1] * elements[3]) / det;
+        return new Matrix3x3(result);
     }
-
-
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("Matrix3x3{\n");
+        StringBuilder sb = new StringBuilder("Matrix3x3X{\n");
         for (int i = 0; i < 3; i++) {
-            builder.append("  [");
+            sb.append("  [");
             for (int j = 0; j < 3; j++) {
-                builder.append(elements[i][j]).append(j < 2 ? ", " : "");
+                sb.append(elements[i * 3 + j]).append(j < 2 ? ", " : "");
             }
-            builder.append("]\n");
+            sb.append("]\n");
         }
-        builder.append("}");
-        return builder.toString();
+        sb.append("}");
+        return sb.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Matrix3x3 matrix = (Matrix3x3) obj;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (Math.abs(this.elements[i][j] - matrix.elements[i][j]) > 1e-6) {
-                    return false;
-                }
+        if (!(obj instanceof Matrix3x3 other)) return false;
+        for (int i = 0; i < 9; i++) {
+            if (Math.abs(this.elements[i] - other.elements[i]) > 1e-6) {
+                return false;
             }
         }
         return true;

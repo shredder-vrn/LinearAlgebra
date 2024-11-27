@@ -1,28 +1,30 @@
 package wings.math.vectors;
 
-/**
- * Интерфейс Vector, определяющий основные операции для векторов.
- */
-public interface Vector {
+public interface Vector<V> {
+    float x();
+    float y();
+    float z();
+    float w();
+
     /**
      * Сложение с другим вектором.
      */
-    Vector add(Vector v2);
+    V add(V v2);
 
     /**
      * Вычитание другого вектора.
      */
-    Vector subtract(Vector v2);
+    V subtract(V v2);
 
     /**
      * Умножение вектора на скаляр.
      */
-    Vector scale(float scalar);
+    V scale(float scalar);
 
     /**
      * Деление вектора на скаляр.
      */
-    Vector divide(float scalar);
+    V divide(float scalar);
 
     /**
      * Вычисление длины вектора.
@@ -32,10 +34,10 @@ public interface Vector {
     /**
      * Нормализация вектора (приведение длины к 1).
      */
-    Vector normalize();
+    V normalize();
 
     /**
      * Скалярное произведение с другим вектором.
      */
-    float dotProduct(Vector v2);
+    float dotProduct(V v2);
 }

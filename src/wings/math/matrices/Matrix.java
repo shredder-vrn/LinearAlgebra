@@ -1,34 +1,29 @@
 package wings.math.matrices;
 
-import wings.math.vectors.Vector;
-
-/**
- * Интерфейс Matrix, определяющий основные операции для матриц.
- */
-public interface Matrix {
+public interface Matrix<M, V> {
 
     /**
      * Сложение с другой матрицей.
      */
-    Matrix add(Matrix m2);
-    
+    M add(M m2);
+
     /**
      * Вычитание другой матрицы.
      */
-    Matrix subtract(Matrix m2);
+    M subtract(M m2);
 
     /**
      * Умножение на другую матрицу.
      */
-    Matrix multiply(Matrix m2);
+    M multiplyMM(M m2);
 
     /**
      * Умножение на вектор.
      */
-    Vector multiply(Vector vector);
+    V multiplyMV(V v2);
 
     /**
      * Транспонирование матрицы.
      */
-    Matrix transpose();
+    M transpose();
 }

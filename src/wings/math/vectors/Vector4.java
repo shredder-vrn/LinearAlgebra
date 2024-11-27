@@ -1,67 +1,29 @@
 package wings.math.vectors;
 
 /**
- * Класс Vector4 для работы с четырехмерными векторами.
+ * Класс Vector4X для работы с четырехмерными векторами.
  */
-public class Vector4 implements Vector {
-    private final float x;
-    private final float y;
-    private final float z;
-    private final float w;
-
-    // Конструктор
-    public Vector4(float x, float y, float z, float w) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
-    }
-
-    // Геттеры
-
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
-    }
-
-    public float getW() {
-        return w;
-    }
-
+public record Vector4(float x, float y, float z, float w) implements Vector<Vector4> {
     // Реализация методов интерфейса Vector
     @Override
-    public Vector add(Vector v) {
-        if (v instanceof Vector4 other) {
-            return new Vector4(this.x + other.x, this.y + other.y, this.z + other.z, this.w + other.w);
-        }
-        throw new IllegalArgumentException("Vector4.add: прибавляемый вектор не соответствует размерности.");
+    public Vector4 add(Vector4 v2) {
+        return new Vector4(this.x + v2.x, this.y + v2.y, this.z + v2.z, this.w + v2.w);
     }
 
     @Override
-    public Vector subtract(Vector v) {
-        if (v instanceof Vector4 other) {
-            return new Vector4(this.x - other.x, this.y - other.y, this.z - other.z, this.w - other.w);
-        }
-        throw new IllegalArgumentException("Vector4.subtract: вычитаемый вектор не соответствует размерности.");
+    public Vector4 subtract(Vector4 v2) {
+        return new Vector4(this.x - v2.x, this.y - v2.y, this.z - v2.z, this.w - v2.w);
     }
 
     @Override
-    public Vector scale(float scalar) {
+    public Vector4 scale(float scalar) {
         return new Vector4(this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar);
     }
 
     @Override
-    public Vector divide(float scalar) {
+    public Vector4 divide(float scalar) {
         if (scalar == 0) {
-            throw new ArithmeticException("Vector4.divide: деление на ноль невозможно.");
+            throw new ArithmeticException("Vector4X.divide: деление на ноль невозможно.");
         }
         return new Vector4(this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar);
     }
@@ -72,25 +34,22 @@ public class Vector4 implements Vector {
     }
 
     @Override
-    public Vector normalize() {
+    public Vector4 normalize() {
         float length = length();
         if (length == 0) {
-            throw new ArithmeticException("Vector4.normalize: длина вектора равна нулю, нормализация невозможна.");
+            throw new ArithmeticException("Vector4X.normalize: длина вектора равна нулю, нормализация невозможна.");
         }
         return divide(length);
     }
 
     @Override
-    public float dotProduct(Vector v) {
-        if (v instanceof Vector4 other) {
-            return this.x * other.x + this.y * other.y + this.z * other.z + this.w * other.w;
-        }
-        throw new IllegalArgumentException("Vector4.dotProduct: скалярное произведение невозможно с вектором другой размерности.");
+    public float dotProduct(Vector4 v2) {
+        return this.x * v2.x + this.y * v2.y + this.z * v2.z + this.w * v2.w;
     }
 
     @Override
     public String toString() {
-        return "Vector4{" + "x=" + x + ", y=" + y + ", z=" + z + ", w=" + w + '}';
+        return "Vector4X{" + "x=" + x + ", y=" + y + ", z=" + z + ", w=" + w + '}';
     }
 
     @Override

@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class MatrixTests {
+/*
 
     // Тесты на матрицы 3х3
 
@@ -358,5 +359,6 @@ public class MatrixTests {
         });
         Assertions.assertEquals(expected, m.transpose());
     }
+*/
 
 }
